@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>PerfectUI</title>
+  <link rel="manifest" href="manifest.json">
+
+  <style>
+    /* =========================================================
+   ROOT THEME VARIABLES (Dashboard Preview Only)
+   ========================================================= */
+:root {
+  --theme-primary: #ff7ac4;
+  --theme-bg: #ffffff;
+  --theme-surface: #ffffff;
+  --theme-text: #1b1027;
+  --theme-accent: #ff7ac4;
+
+  --radius-lg: 22px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+
+  --shadow-lg: 0 18px 45px rgba(31, 27, 46, 0.16);
+  --shadow-md: 0 10px 24px rgba(31, 27, 46, 0.16);
+  --shadow-sm: 0 6px 14px rgba(31, 27, 46, 0.12);
+
+  --transition-fast: 0.16s ease;
+  --transition-med: 0.25s ease;
+
+  --font-main: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+    "Segoe UI", sans-serif;
+}
+
+/* =========================================================
+   GLOBAL RESET
+   ========================================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-main);
+  min-height: 100vh;
+  color: #1f1b2e;
+  background: radial-gradient(circle at top left, #ffe6f5 0, #f7f3ff 35%, #e6f7ff 70%, #f5fffb 100%);
+  overflow-x: hidden;
+}
+
+/* =========================================================
+   FLOATING PASTEL RIBBONS
+   ========================================================= */
+.tb-ribbon-layer {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.tb-ribbon {
+  position: absolute;
+  width: 160%;
+  height: 260px;
+  filter: blur(40px);
+  opacity: 0.75;
+  transform: translate3d(0, 0, 0);
+  animation: tb-ribbon-float 18s ease-in-out infinite alternate;
+}
+
+.tb-ribbon-1 {
+  top: -80px;
+  left: -20%;
+  background: linear-gradient(120deg, #ffb3dd, #ff7ac4, #ffc6ff);
+}
+
+.tb-ribbon-2 {
+  top: 35%;
+  left: -30%;
+  background: linear-gradient(135deg, #c7d7ff, #b39dff, #e0c3fc);
+  animation-duration: 22s;
+}
+
+.tb-ribbon-3 {
+  bottom: -120px;
+  left: -10%;
+  background: linear-gradient(120deg, #b8ffec, #9bf6ff, #d0ffea);
+  animation-duration: 26s;
+}
+
+@keyframes tb-ribbon-float {
+  0% { transform: translate3d(-5%, 0, 0) rotate(-2deg); }
+  50% { transform: translate3d(5%, -10px, 0) rotate(2deg); }
+  100% { transform: translate3d(0, 10px, 0) rotate(-1deg); }
+}
+
+/* =========================================================
+   APP CONTAINER + HEADER
+   ========================================================= */
+.tb-app {
+  position: relative;
+  z-index: 1;
+  max-width: 1120px;
+  margin: 40px auto 60px;
+  padding: 0 20px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.tb-header {
+  text-align: center;
+  padding: 16px 0 8px;
+  animation: tb-fade-up 0.7s ease-out both;
+}
+
+.tb-title {
+  margin: 0;
+  font-size: 1.9rem;
+  letter-spacing: 0.03em;
+  color: #1b1027;
+}
+
+.tb-subtitle {
+  margin: 8px 0 0;
+  font-size: 0.95rem;
+  color: #5c5475;
+}
+
+/* =========================================================
+   FLOATING CARDS
+   ========================================================= */
+.tb-card {
+  background: rgba(255, 255, 255, 0.78);
+  backdrop-filter: blur(18px);
+  border-radius: var(--radius-lg);
+  padding: 20px 20px 18px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  position: relative;
+  overflow: hidden;
+  animation: tb-float-in 0.7s ease-out both;
+}
+
+.tb-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(255, 255, 255, 0.7), transparent 55%);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* =========================================================
+   APP-LEVEL BUTTONS (KEEP YOUR GRADIENTS)
+   ========================================================= */
+.tb-btn {
+  border-radius: 999px;
+  border: none;
+  padding: 8px 16px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: var(--transition-fast);
+  white-space: nowrap;
+}
+
+.tb-btn-primary-app {
+  background: linear-gradient(135deg, #ff7ac4, #ba68ff, #9bf6ff);
+  color: #1b1027;
+  box-shadow:
+    0 10px 24px rgba(186, 104, 255, 0.45),
+    0 0 0 1px rgba(255, 255, 255, 0.9);
+}
+
+.tb-btn-primary-app:hover {
+  transform: translateY(-1px);
+  box-shadow:
+    0 14px 32px rgba(186, 104, 255, 0.55),
+    0 0 0 1px rgba(255, 255, 255, 1);
+}
+
+/* =========================================================
+   TOKEN SWATCHES
+   ========================================================= */
+
+.tb-token-preview-row {
+  display: flex;
+  gap: 14px;
+  margin-top: 18px;
+  flex-wrap: wrap;
+}
+
+.tb-token-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  width: 70px;
+}
+
+.tb-token-color {
+  width: 100%;
+  height: 42px;
+  border-radius: 10px;
+  background: #ccc;
+  box-shadow:
+    0 4px 10px rgba(0,0,0,0.12),
+    0 0 0 1px rgba(255,255,255,0.9);
+}
+
+.tb-token-label {
+  font-size: 0.75rem;
+  color: #5c5475;
+  text-align: center;
+}
+
+/* =========================================================
+   DASHBOARD BUTTONS (THEME-CONTROLLED)
+   ========================================================= */
+.tb-btn-primary-preview {
+  background: var(--theme-primary);
+  color: var(--theme-text);
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.9);
+}
+
+.tb-btn-outline-preview {
+  background: var(--theme-surface);
+  color: var(--theme-text);
+  border: 1px solid var(--theme-accent);
+}
+
+/* =========================================================
+   FORM ELEMENTS
+   ========================================================= */
+.tb-input,
+.tb-select {
+  border-radius: 999px;
+  border: 1px solid rgba(123, 104, 238, 0.18);
+  padding: 8px 12px;
+  font-size: 0.9rem;
+  background: rgba(255, 255, 255, 0.9);
+  color: #241634;
+  outline: none;
+  box-shadow:
+    var(--shadow-sm),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.8);
+  transition: var(--transition-fast);
+}
+
+.tb-input:focus,
+.tb-select:focus {
+  border-color: rgba(186, 104, 255, 0.7);
+  box-shadow:
+    var(--shadow-md),
+    0 0 0 1px rgba(255, 255, 255, 0.9);
+  transform: translateY(-1px);
+}
+
+/* Small versions */
+.tb-input-sm,
+.tb-select-sm {
+  padding: 6px 10px;
+  font-size: 0.8rem;
+}
+
+.tb-input-group {
+  display: flex;
+  gap: 8px;
+}
+
+.tb-input-group-sm {
+  display: flex;
+  gap: 6px;
+}
+
+/* =========================================================
+   DASHBOARD PREVIEW — THEME CONTROLLED
+   ========================================================= */
+.tb-dashboard {
+  display: grid;
+  grid-template-columns: 220px minmax(0, 1fr);
+  gap: 16px;
+  margin-top: 8px;
+  background: var(--theme-bg);
+  color: var(--theme-text);
+}
+
+/* SIDEBAR */
+.tb-sidebar {
+  border-radius: var(--radius-md);
+  background: var(--theme-surface);
+  color: var(--theme-text);
+  box-shadow: var(--shadow-md);
+  padding: 14px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tb-sidebar-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  background: var(--theme-primary);
+  color: var(--theme-text);
+  font-weight: 700;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow:
+    0 10px 24px rgba(186, 104, 255, 0.5),
+    0 0 0 1px rgba(255, 255, 255, 0.9);
+}
+
+.tb-sidebar-link {
+  border-radius: 999px;
+  padding: 7px 10px;
+  font-size: 0.8rem;
+  background: transparent;
+  color: var(--theme-text);
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.tb-sidebar-link:hover {
+  background: var(--theme-accent);
+  transform: translateY(-1px);
+}
+
+.tb-sidebar-link-active {
+  background: var(--theme-primary);
+  box-shadow: var(--shadow-sm);
+}
+
+/* MAIN PANEL */
+.tb-main {
+  border-radius: var(--radius-md);
+  background: var(--theme-surface);
+  color: var(--theme-text);
+  box-shadow: var(--shadow-md);
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+/* MINI CARDS */
+.tb-main-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.tb-card-mini {
+  border-radius: var(--radius-sm);
+  background: var(--theme-surface);
+  color: var(--theme-text);
+  box-shadow: var(--shadow-sm);
+  padding: 10px 12px;
+}
+
+.tb-card-mini-label {
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+
+.tb-card-mini-value {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.tb-card-mini-meta {
+  font-size: 0.75rem;
+  opacity: 0.6;
+  margin-top: 2px;
+}
+
+/* LOWER PANELS */
+.tb-main-lower {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.tb-panel {
+  border-radius: var(--radius-sm);
+  background: var(--theme-surface);
+  color: var(--theme-text);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+}
+
+.tb-panel-header {
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.tb-panel-title {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.tb-panel-body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tb-panel-body-list {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tb-panel-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+/* ACTIVITY LIST */
+.tb-activity-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tb-activity-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--theme-accent);
+}
+
+.tb-activity-title {
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.tb-activity-meta {
+  font-size: 0.7rem;
+  opacity: 0.6;
+}
+
+/* CODE TABS */
+.tb-code-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.tb-code-tab {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.7);
+  border: 1px solid rgba(0,0,0,0.08);
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: var(--transition-fast);
+}
+
+.tb-code-tab-active {
+  background: #1b1027;
+  color: #fff;
+}
+
+/* CODE PANELS */
+.tb-code-panels {
+  position: relative;
+}
+
+.tb-code-panel {
+  display: none;
+  background: rgba(15, 10, 25, 0.92);
+  color: #f5f0ff;
+  border-radius: var(--radius-md);
+  padding: 16px;
+  font-size: 0.8rem;
+  white-space: pre-wrap;
+  box-shadow:
+    0 14px 32px rgba(15, 10, 25, 0.7),
+    0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.tb-code-panel-active {
+  display: block;
+}
+
+/* ACTIONS */
+.tb-actions {
+  margin-top: 16px;
+  display: flex;
+  gap: 10px;
+}
+
+.tb-actions-right {
+  justify-content: flex-end;
+}
+
+/* ANIMATIONS */
+@keyframes tb-fade-up {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes tb-float-in {
+  from { opacity: 0; transform: translateY(14px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+  </style>
+</head>
+
+<body>
+
+  <!-- Floating pastel ribbons -->
+  <div class="tb-ribbon-layer">
+    <div class="tb-ribbon tb-ribbon-1"></div>
+    <div class="tb-ribbon tb-ribbon-2"></div>
+    <div class="tb-ribbon tb-ribbon-3"></div>
+  </div>
+
+  <div class="tb-app">
+
+    <!-- HEADER -->
+<header>
+  <div class="header-left">
+    <h1>PerfectUI</h1>
+  </div>
+
+  <div class="header-links">
+
+    <!-- PerfectHex -->
+    <a href="https://kellypope714-ui.github.io/perfecthex/" class="header-link" target="_blank">
+      <img src="assets/perfecthex.png" alt="PerfectHex">
+      <span>PerfectHex</span>
+    </a>
+
+    <!-- PerfectVariant -->
+    <a href="https://kellypope714-ui.github.io/perfectvariant/" class="header-link" target="_blank">
+      <img src="assets/perfectvariant.png" alt="PerfectVariant">
+      <span>PerfectVariant</span>
+    </a>
+
+  </div>
+</header>
+
+    <!-- CARD 1: THEME CONTROLS -->
+    <section class="tb-card tb-card-controls">
+      <h2 class="tb-card-title">Theme Settings</h2>
+      <p class="tb-card-subtitle">Choose a primary color and mode, then generate your theme.</p>
+
+      <div class="tb-form-row">
+        <label for="primaryColor" class="tb-label">Primary Color (Hex)</label>
+        <div class="tb-input-group">
+          <input type="text" id="primaryColor" class="tb-input" value="#ff7ac4" maxlength="7" />
+          <input type="color" id="primaryColorPicker" class="tb-color-input" value="#ff7ac4" />
+        </div>
+      </div>
+
+      <div class="tb-form-row">
+        <label for="modeSelect" class="tb-label">Mode</label>
+        <select id="modeSelect" class="tb-select">
+          <option value="light" selected>Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </div>
+
+      <div class="tb-form-row tb-form-row-inline">
+        <div>
+          <label class="tb-label">Accent Intensity</label>
+          <input type="range" id="accentIntensity" min="0" max="100" value="60" class="tb-slider" />
+        </div>
+        <div class="tb-slider-value" id="accentIntensityValue">60%</div>
+      </div>
+
+      <div class="tb-actions">
+        <button id="generateThemeBtn" class="tb-btn tb-btn-primary-app">Generate Theme</button>
+        <button id="resetThemeBtn" class="tb-btn tb-btn-ghost">Reset</button>
+      </div>
+
+      <div class="tb-token-preview-row">
+        <div class="tb-token-swatch">
+          <div class="tb-token-color tb-token-primary"></div>
+          <span class="tb-token-label">Primary</span>
+        </div>
+        <div class="tb-token-swatch">
+          <div class="tb-token-color tb-token-bg"></div>
+          <span class="tb-token-label">Background</span>
+        </div>
+        <div class="tb-token-swatch">
+          <div class="tb-token-color tb-token-surface"></div>
+          <span class="tb-token-label">Surface</span>
+        </div>
+        <div class="tb-token-swatch">
+          <div class="tb-token-color tb-token-text"></div>
+          <span class="tb-token-label">Text</span>
+        </div>
+        <div class="tb-token-swatch">
+          <div class="tb-token-color tb-token-accent"></div>
+          <span class="tb-token-label">Accent</span>
+        </div>
+      </div>
+    </section>
+    <!-- CARD 2: DASHBOARD PREVIEW -->
+    <section class="tb-card tb-card-preview">
+      <h2 class="tb-card-title">Live Dashboard Preview</h2>
+      <p class="tb-card-subtitle">See how your theme looks on a simple, neutral dashboard layout.</p>
+
+      <div class="tb-dashboard">
+
+        <!-- SIDEBAR -->
+        <aside class="tb-sidebar">
+          <div class="tb-sidebar-logo">UI</div>
+          <nav class="tb-sidebar-nav">
+            <button class="tb-sidebar-link tb-sidebar-link-active">Overview</button>
+            <button class="tb-sidebar-link">Analytics</button>
+            <button class="tb-sidebar-link">Users</button>
+            <button class="tb-sidebar-link">Settings</button>
+          </nav>
+        </aside>
+
+        <!-- MAIN -->
+        <main class="tb-main">
+
+          <header class="tb-main-header">
+            <div>
+              <h3 class="tb-main-title">Project Dashboard</h3>
+              <p class="tb-main-subtitle">A neutral layout to test your theme.</p>
+            </div>
+            <div class="tb-main-actions">
+              <button class="tb-btn tb-btn-outline-preview">Secondary</button>
+              <button class="tb-btn tb-btn-primary-preview tb-btn-small">Primary Action</button>
+            </div>
+          </header>
+
+          <!-- MINI CARDS -->
+          <section class="tb-main-grid">
+            <div class="tb-card-mini">
+              <div class="tb-card-mini-label">Active Projects</div>
+              <div class="tb-card-mini-value">12</div>
+              <div class="tb-card-mini-meta">+3 this week</div>
+            </div>
+            <div class="tb-card-mini">
+              <div class="tb-card-mini-label">Open Tasks</div>
+              <div class="tb-card-mini-value">48</div>
+              <div class="tb-card-mini-meta">5 due today</div>
+            </div>
+            <div class="tb-card-mini">
+              <div class="tb-card-mini-label">Team Members</div>
+              <div class="tb-card-mini-value">7</div>
+              <div class="tb-card-mini-meta">2 invited</div>
+            </div>
+          </section>
+
+          <!-- LOWER PANELS -->
+          <section class="tb-main-lower">
+
+            <!-- FILTER PANEL -->
+            <div class="tb-panel">
+              <div class="tb-panel-header">
+                <h4 class="tb-panel-title">Filters</h4>
+              </div>
+              <div class="tb-panel-body">
+
+                <div class="tb-form-row">
+                  <label class="tb-label">Status</label>
+                  <select class="tb-select tb-select-sm">
+                    <option>All</option>
+                    <option>Active</option>
+                    <option>Paused</option>
+                    <option>Completed</option>
+                  </select>
+                </div>
+
+                <div class="tb-form-row">
+                  <label class="tb-label">Owner</label>
+                  <input type="text" class="tb-input tb-input-sm" placeholder="Search by name" />
+                </div>
+
+                <div class="tb-form-row">
+                  <label class="tb-label">Date Range</label>
+                  <div class="tb-input-group tb-input-group-sm">
+                    <input type="date" class="tb-input tb-input-sm" />
+                    <input type="date" class="tb-input tb-input-sm" />
+                  </div>
+                </div>
+
+                <div class="tb-panel-actions">
+                  <button class="tb-btn tb-btn-outline-preview tb-btn-small">Clear</button>
+                  <button class="tb-btn tb-btn-primary-preview tb-btn-small">Apply</button>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- ACTIVITY PANEL -->
+            <div class="tb-panel">
+              <div class="tb-panel-header">
+                <h4 class="tb-panel-title">Activity</h4>
+              </div>
+              <div class="tb-panel-body tb-panel-body-list">
+
+                <div class="tb-activity-item">
+                  <div class="tb-activity-dot"></div>
+                  <div>
+                    <div class="tb-activity-title">New project created</div>
+                    <div class="tb-activity-meta">2 minutes ago</div>
+                  </div>
+                </div>
+
+                <div class="tb-activity-item">
+                  <div class="tb-activity-dot"></div>
+                  <div>
+                    <div class="tb-activity-title">User invited</div>
+                    <div class="tb-activity-meta">15 minutes ago</div>
+                  </div>
+                </div>
+
+                <div class="tb-activity-item">
+                  <div class="tb-activity-dot"></div>
+                  <div>
+                    <div class="tb-activity-title">Task completed</div>
+                    <div class="tb-activity-meta">1 hour ago</div>
+                  </div>
+                </div>
+
+                <div class="tb-activity-item">
+                  <div class="tb-activity-dot"></div>
+                  <div>
+                    <div class="tb-activity-title">Settings updated</div>
+                    <div class="tb-activity-meta">3 hours ago</div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </section>
+
+        </main>
+      </div>
+    </section>
+    <!-- CARD 3: CODE OUTPUT -->
+    <section class="tb-card tb-card-code">
+      <h2 class="tb-card-title">Theme Tokens & Code</h2>
+      <p class="tb-card-subtitle">Copy your theme as CSS variables, JSON, or a token list.</p>
+
+      <div class="tb-code-tabs">
+        <button class="tb-code-tab tb-code-tab-active" data-tab="css">CSS</button>
+        <button class="tb-code-tab" data-tab="json">JSON</button>
+        <button class="tb-code-tab" data-tab="tokens">Tokens</button>
+      </div>
+
+      <div class="tb-code-panels">
+        <pre class="tb-code-panel tb-code-panel-active" id="codeCss"></pre>
+        <pre class="tb-code-panel" id="codeJson"></pre>
+        <pre class="tb-code-panel" id="codeTokens"></pre>
+      </div>
+
+      <div class="tb-actions tb-actions-right">
+        <button id="copyCodeBtn" class="tb-btn tb-btn-primary-app tb-btn-small">Copy Visible Code</button>
+      </div>
+    </section>
+
+  </div> <!-- end .tb-app -->
+
+  <script>
+    /* =========================================================
+   UTILITY FUNCTIONS
+   ========================================================= */
+
+// Clamp
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, value));
+}
+
+// Hex → RGB
+function hexToRgb(hex) {
+  hex = hex.replace("#", "").trim();
+  if (hex.length === 3) hex = hex.split("").map(c => c + c).join("");
+  if (hex.length !== 6) return null;
+  const num = parseInt(hex, 16);
+  return {
+    r: (num >> 16) & 255,
+    g: (num >> 8) & 255,
+    b: num & 255
+  };
+}
+
+// RGB → HSL
+function rgbToHsl(r, g, b) {
+  r /= 255; g /= 255; b /= 255;
+  const max = Math.max(r, g, b), min = Math.min(r, g, b);
+  let h, s;
+  const l = (max + min) / 2;
+
+  if (max === min) {
+    h = s = 0;
+  } else {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    switch (max) {
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+      case g: h = (b - r) / d + 2; break;
+      case b: h = (r - g) / d + 4; break;
+    }
+    h /= 6;
+  }
+
+  return {
+    h: Math.round(h * 360),
+    s: Math.round(s * 100),
+    l: Math.round(l * 100)
+  };
+}
+
+// RGB → RGBA string
+function rgbToRgba(r, g, b, a = 1) {
+  return `rgba(${r}, ${g}, ${b}, ${a})`;
+}
+
+// HSL → CSS string
+function hslToCss(h, s, l) {
+  return `hsl(${h}, ${s}%, ${l}%)`;
+}
+
+/* =========================================================
+   THEME GENERATION
+   ========================================================= */
+
+function generateThemeTokens(primaryHex, mode, intensity) {
+  const rgb = hexToRgb(primaryHex);
+  if (!rgb) return null;
+
+  const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+  const { h, s, l } = hsl;
+
+  const boost = (intensity - 50) / 100;
+
+  let bg, surface, text, accent;
+
+  if (mode === "light") {
+    bg = hslToCss(h + 4, clamp(s - 20, 10, 60), clamp(98 - boost * 6, 92, 99));
+    surface = hslToCss(h - 4, clamp(s - 10, 15, 70), clamp(96 - boost * 8, 88, 98));
+    text = hslToCss(h - 20, clamp(s - 40, 5, 40), clamp(18 - boost * 6, 8, 26));
+    accent = hslToCss(h, clamp(s + boost * 10, 40, 90), clamp(l - boost * 10, 30, 60));
+  } else {
+    bg = hslToCss(h - 10, clamp(s - 10, 20, 70), clamp(10 + boost * 6, 6, 16));
+    surface = hslToCss(h + 6, clamp(s - 5, 25, 80), clamp(16 + boost * 8, 10, 24));
+    text = hslToCss(h + 20, clamp(s - 40, 5, 40), clamp(92 + boost * 4, 86, 98));
+    accent = hslToCss(h, clamp(s + boost * 12, 45, 95), clamp(l + boost * 8, 45, 75));
+  }
+
+  return {
+    primary: primaryHex,
+    primaryRgb: rgbToRgba(rgb.r, rgb.g, rgb.b),
+    primaryHsl: hslToCss(h, s, l),
+
+    background: bg,
+    surface: surface,
+    text: text,
+    accent: accent,
+
+    mode,
+    intensity
+  };
+}
+
+/* =========================================================
+   APPLY THEME TO DASHBOARD
+   ========================================================= */
+
+function applyTheme(tokens) {
+  const root = document.documentElement;
+
+  root.style.setProperty("--theme-primary", tokens.primary);
+  root.style.setProperty("--theme-bg", tokens.background);
+  root.style.setProperty("--theme-surface", tokens.surface);
+  root.style.setProperty("--theme-text", tokens.text);
+  root.style.setProperty("--theme-accent", tokens.accent);
+
+  // Update swatches
+  document.querySelector(".tb-token-primary").style.background = tokens.primary;
+  document.querySelector(".tb-token-bg").style.background = tokens.background;
+  document.querySelector(".tb-token-surface").style.background = tokens.surface;
+  document.querySelector(".tb-token-text").style.background = tokens.text;
+  document.querySelector(".tb-token-accent").style.background = tokens.accent;
+}
+
+/* =========================================================
+   BUILD CODE OUTPUTS (CSS, JSON, TOKENS)
+   ========================================================= */
+
+function buildOutputs(tokens) {
+  const css = `
+:root {
+  --theme-primary: ${tokens.primary};
+  --theme-primary-rgb: ${tokens.primaryRgb};
+  --theme-primary-hsl: ${tokens.primaryHsl};
+
+  --theme-background: ${tokens.background};
+  --theme-surface: ${tokens.surface};
+  --theme-text: ${tokens.text};
+  --theme-accent: ${tokens.accent};
+
+  --radius-lg: 22px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+
+  --shadow-lg: 0 18px 45px rgba(31, 27, 46, 0.16);
+  --shadow-md: 0 10px 24px rgba(31, 27, 46, 0.16);
+  --shadow-sm: 0 6px 14px rgba(31, 27, 46, 0.12);
+
+  --transition-fast: 0.16s ease;
+  --transition-med: 0.25s ease;
+
+  --font-main: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", sans-serif;
+}`;
+
+  const json = JSON.stringify(
+    {
+      colors: {
+        primary: tokens.primary,
+        primaryRgb: tokens.primaryRgb,
+        primaryHsl: tokens.primaryHsl,
+        background: tokens.background,
+        surface: tokens.surface,
+        text: tokens.text,
+        accent: tokens.accent
+      },
+      static: {
+        radius: {
+          lg: "22px",
+          md: "16px",
+          sm: "10px"
+        },
+        shadows: {
+          lg: "0 18px 45px rgba(31, 27, 46, 0.16)",
+          md: "0 10px 24px rgba(31, 27, 46, 0.16)",
+          sm: "0 6px 14px rgba(31, 27, 46, 0.12)"
+        },
+        transitions: {
+          fast: "0.16s ease",
+          med: "0.25s ease"
+        },
+        font: "system-ui"
+      },
+      meta: {
+        mode: tokens.mode,
+        intensity: tokens.intensity
+      }
+    },
+    null,
+    2
+  );
+
+  const tokensList = `
+primary: ${tokens.primary}
+primaryRgb: ${tokens.primaryRgb}
+primaryHsl: ${tokens.primaryHsl}
+
+background: ${tokens.background}
+surface: ${tokens.surface}
+text: ${tokens.text}
+accent: ${tokens.accent}
+
+radius-lg: 22px
+radius-md: 16px
+radius-sm: 10px
+
+shadow-lg: 0 18px 45px rgba(31, 27, 46, 0.16)
+shadow-md: 0 10px 24px rgba(31, 27, 46, 0.16)
+shadow-sm: 0 6px 14px rgba(31, 27, 46, 0.12)
+
+transition-fast: 0.16s ease
+transition-med: 0.25s ease
+font-main: system-ui
+`;
+
+  return { css, json, tokensList };
+}
+
+/* =========================================================
+   UPDATE CODE PANELS
+   ========================================================= */
+
+function updatePanels(outputs) {
+  document.getElementById("codeCss").textContent = outputs.css;
+  document.getElementById("codeJson").textContent = outputs.json;
+  document.getElementById("codeTokens").textContent = outputs.tokensList;
+}
+
+/* =========================================================
+   TABS
+   ========================================================= */
+
+function setupTabs() {
+  const tabs = document.querySelectorAll(".tb-code-tab");
+  const panels = {
+    css: document.getElementById("codeCss"),
+    json: document.getElementById("codeJson"),
+    tokens: document.getElementById("codeTokens")
+  };
+
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      const target = tab.dataset.tab;
+
+      tabs.forEach(t => t.classList.remove("tb-code-tab-active"));
+      tab.classList.add("tb-code-tab-active");
+
+      Object.values(panels).forEach(p => p.classList.remove("tb-code-panel-active"));
+      panels[target].classList.add("tb-code-panel-active");
+    });
+  });
+}
+
+/* =========================================================
+   COPY BUTTON
+   ========================================================= */
+
+function setupCopy() {
+  const btn = document.getElementById("copyCodeBtn");
+  btn.addEventListener("click", async () => {
+    const active = document.querySelector(".tb-code-panel-active");
+    if (!active) return;
+
+    try {
+      await navigator.clipboard.writeText(active.textContent);
+      const original = btn.textContent;
+      btn.textContent = "Copied!";
+      setTimeout(() => (btn.textContent = original), 1200);
+    } catch (e) {
+      console.error("Copy failed", e);
+    }
+  });
+}
+
+
+/* =========================================================
+   MAIN INITIALIZATION
+   ========================================================= */
+
+document.addEventListener("DOMContentLoaded", () => {
+  const primaryInput = document.getElementById("primaryColor");
+  const primaryPicker = document.getElementById("primaryColorPicker");
+  const modeSelect = document.getElementById("modeSelect");
+  const accentSlider = document.getElementById("accentIntensity");
+  const accentValue = document.getElementById("accentIntensityValue");
+
+  const generateBtn = document.getElementById("generateThemeBtn");
+  const resetBtn = document.getElementById("resetThemeBtn");
+
+  function syncColor(fromPicker) {
+    if (fromPicker) {
+      primaryInput.value = primaryPicker.value.toLowerCase();
+    } else {
+      const val = primaryInput.value.trim();
+      if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(val)) {
+        primaryPicker.value = val;
+      }
+    }
+  }
+
+  primaryPicker.addEventListener("input", () => syncColor(true));
+  primaryInput.addEventListener("input", () => syncColor(false));
+
+  accentSlider.addEventListener("input", () => {
+    accentValue.textContent = `${accentSlider.value}%`;
+  });
+
+  function generate() {
+    const primaryHex = primaryInput.value.trim();
+    const mode = modeSelect.value;
+    const intensity = parseInt(accentSlider.value, 10);
+
+    const tokens = generateThemeTokens(primaryHex, mode, intensity);
+    if (!tokens) return;
+
+    applyTheme(tokens);
+    updatePanels(buildOutputs(tokens));
+  }
+
+  generateBtn.addEventListener("click", generate);
+
+  resetBtn.addEventListener("click", () => {
+    primaryInput.value = "#ff7ac4";
+    primaryPicker.value = "#ff7ac4";
+    modeSelect.value = "light";
+    accentSlider.value = 60;
+    accentValue.textContent = "60%";
+    generate();
+  });
+
+  setupTabs();
+  setupCopy();
+
+  generate();
+});
+
+  </script>
+
+</body>
+</html>
